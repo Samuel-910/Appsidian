@@ -17,19 +17,26 @@ import { CommonModule } from '@angular/common';
               d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
-    <span class="text-lg font-semibold">Mi Aplicación</span>
   </div>
 
   <div class="flex flex-1 overflow-hidden">
-    <!-- Sidebar: visible en pantallas grandes o si está abierto -->
     <app-sidebar
       class="w-64 shrink-0 bg-white shadow-md z-50"
       [ngClass]="{
         'hidden': !sidebarOpen,
-        'fixed inset-0': sidebarOpen,
+        'fixed inset-0': sidebarOpen && isMobile(),
         'md:block': true
       }"
     ></app-sidebar>
+
+    <!-- Botón para cerrar sidebar en móvil -->
+    <button
+      *ngIf="sidebarOpen && isMobile()"
+      class="fixed top-4 right-2 z-50 bg-green-600 text-white rounded-full p-2 md:hidden"
+      (click)="toggleSidebar()"
+    >
+      ✕
+    </button>
 
     <!-- Contenido principal -->
     <div class="flex-1 overflow-y-auto p-6 bg-gray-50">
@@ -42,9 +49,13 @@ import { CommonModule } from '@angular/common';
   imports: [SidebarComponent, RouterOutlet, CommonModule]
 })
 export class BusinessLayoutComponent {
-    sidebarOpen = false;
+  sidebarOpen = false;
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  isMobile(): boolean {
+    return window.innerWidth < 768;
   }
 }
