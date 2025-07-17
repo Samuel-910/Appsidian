@@ -1,0 +1,40 @@
+<div class="bg-blue-900 absolute top-0 left-0 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700 bottom-0 leading-5 h-full w-full overflow-hidden"></div>
+
+<div class="relative min-h-screen flex justify-center items-center bg-transparent rounded-3xl z-10">
+  <!-- Contenedor principal con fondo ARDOX -->
+  <div class="bg-cover bg-center mx-auto rounded-3xl w-[900px] flex overflow-hidden shadow-lg" style="background-image: url('img/ARDOX.png');">
+
+    <!-- Contenedor general -->
+    <div class="w-full flex flex-col lg:flex-row">
+      <!-- Formulario de restablecimiento -->
+      <div class="w-full p-10 bg-white bg-opacity-80 backdrop-blur-md">
+        <div class="space-y-6">
+          <h1 class="text-4xl text-center font-semibold text-blue-800 mb-6">Recuperar Contraseña</h1>
+          <div class="space-y-4">
+            <input
+              [(ngModel)]="newPassword"
+              class="w-full text-sm px-4 py-3 bg-white focus:bg-blue-100 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-500"
+              type="password"
+              placeholder="Nueva contraseña"
+            />
+            <input
+              [(ngModel)]="confirmPassword"
+              class="w-full text-sm px-4 py-3 bg-white focus:bg-blue-100 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-500"
+              type="password"
+              placeholder="Repetir nueva contraseña"
+            />
+            <button
+              (click)="verificarcodigo()"
+              class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-lg transition duration-300"
+            >
+              Restablecer Contraseña
+            </button>
+          </div>
+          <p class="mt-4 text-sm text-right text-blue-700">
+            ¿No tienes una cuenta?
+            <a href="/registro" class="text-blue-600 font-semibold hover:underline">¡Crear una cuenta!</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>

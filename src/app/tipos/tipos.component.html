@@ -1,23 +1,46 @@
-<div>
-    <h2>Tipos</h2>
+<div class="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">Tipos</h2>
+        <button (click)="logout()" class="px-3 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+            Cerrar sesión
+        </button>
+    </div>
 
-    <form #tipoForm="ngForm" (ngSubmit)="addTipo({ nombre: nuevoNombre })">
-        <input type="text" [(ngModel)]="nuevoNombre" name="nombre" placeholder="Nuevo tipo" required />
-        <button type="submit">Agregar</button>
+    <form #tipoForm="ngForm" (ngSubmit)="addTipo({ nombre: nuevoNombre })" class="flex gap-4 mb-6">
+        <input type="text" [(ngModel)]="nuevoNombre" name="nombre" placeholder="Nuevo tipo" required
+            class="flex-1 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            Agregar
+        </button>
     </form>
 
-    <div *ngIf="error" style="color: red;">
+    <div *ngIf="error" class="text-red-600 mb-4 text-center">
         {{ error }}
     </div>
 
-    <ul>
-        <li *ngFor="let tipo of tipos">
-            <span *ngIf="!tipo.editando">{{ tipo.nombre }}</span>
-            <input *ngIf="tipo.editando" [(ngModel)]="tipo.nombre" name="editNombre{{ tipo.id }}" />
-            <button *ngIf="!tipo.editando" (click)="tipo.editando = true">Editar</button>
-            <button *ngIf="tipo.editando"
-                (click)="updateTipo(tipo.id, { nombre: tipo.nombre }); tipo.editando = false;">Guardar</button>
-            <button (click)="deleteTipo(tipo.id)">Eliminar</button>
+    <ul class="space-y-4">
+        <li *ngFor="let tipo of tipos" class="flex items-center gap-4">
+            <span *ngIf="!tipo.editando" class="flex-1 text-gray-700">{{ tipo.nombre }}</span>
+
+            <input *ngIf="tipo.editando" [(ngModel)]="tipo.nombre" name="editNombre{{ tipo.id }}"
+                class="flex-1 px-2 py-1 border rounded-md" />
+
+            <div class="flex gap-2">
+                <button *ngIf="!tipo.editando" (click)="tipo.editando = true"
+                    class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                    Editar
+                </button>
+
+                <button *ngIf="tipo.editando"
+                    (click)="updateTipo(tipo.id, { nombre: tipo.nombre }); tipo.editando = false;"
+                    class="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700">
+                    Guardar
+                </button>
+
+                <button (click)="deleteTipo(tipo.id)" class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                    Eliminar
+                </button>
+            </div>
         </li>
     </ul>
 </div>

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { TiposService } from '../service/tipos.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Router } from '@angular/router';
+import { SupabaseService } from '../supabase.service';
 
 @Component({
   selector: 'app-tipos',
@@ -14,7 +17,8 @@ export class TiposComponent {
   error: string | null = null;
   nuevoNombre: string = ''; // 👈 Agregado
 
-  constructor(private tiposService: TiposService) {}
+  constructor(private tiposService: TiposService,   private router: Router,
+  private supabase: SupabaseService) {}
 
   async ngOnInit() {
     await this.loadTipos();
@@ -55,4 +59,15 @@ export class TiposComponent {
       this.error = err.message;
     }
   }
+
+  async logout() {
+  const { error } = await this.supabase.signOut();
+  if (error) {
+    console.error('Error al cerrar sesión:', error.message);
+  } else {
+    // Redirigir al login
+    this.router.navigate(['/']);
+  }
+}
+
 }

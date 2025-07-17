@@ -8,17 +8,30 @@ export class SupabaseService {
     if (error) throw error;
     return data;
   }
-
-  async signIn(email: string) {
-    return supabase.auth.signInWithOtp({ email });
-  }
-
   async signOut() {
     return supabase.auth.signOut();
   }
-    async signInWithPassword(email: string, password: string) {
+  async signInWithPassword(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   }
+  async signUp(email: string, password: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) throw error;
+    return data;
+  }
+  async resetPassword(email: string) {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://localhost:4200/verificacioncodigo'
+    });
+
+    if (error) throw error;
+    return data;
+  }
+
 }
