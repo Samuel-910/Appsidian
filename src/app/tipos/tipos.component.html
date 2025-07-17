@@ -1,0 +1,23 @@
+<div>
+    <h2>Tipos</h2>
+
+    <form #tipoForm="ngForm" (ngSubmit)="addTipo({ nombre: nuevoNombre })">
+        <input type="text" [(ngModel)]="nuevoNombre" name="nombre" placeholder="Nuevo tipo" required />
+        <button type="submit">Agregar</button>
+    </form>
+
+    <div *ngIf="error" style="color: red;">
+        {{ error }}
+    </div>
+
+    <ul>
+        <li *ngFor="let tipo of tipos">
+            <span *ngIf="!tipo.editando">{{ tipo.nombre }}</span>
+            <input *ngIf="tipo.editando" [(ngModel)]="tipo.nombre" name="editNombre{{ tipo.id }}" />
+            <button *ngIf="!tipo.editando" (click)="tipo.editando = true">Editar</button>
+            <button *ngIf="tipo.editando"
+                (click)="updateTipo(tipo.id, { nombre: tipo.nombre }); tipo.editando = false;">Guardar</button>
+            <button (click)="deleteTipo(tipo.id)">Eliminar</button>
+        </li>
+    </ul>
+</div>
