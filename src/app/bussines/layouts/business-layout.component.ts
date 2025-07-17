@@ -32,7 +32,7 @@ import { CommonModule } from '@angular/common';
     <!-- Botón para cerrar sidebar en móvil -->
     <button
       *ngIf="sidebarOpen && isMobile()"
-      class="fixed top-4 right-2 z-50 bg-green-600 text-white rounded-full p-2 md:hidden"
+      class="fixed top-4 right-2 z-50 bg-blue-600 text-white rounded-full p-2 md:hidden"
       (click)="toggleSidebar()"
     >
       ✕
