@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { TiposService } from '../service/tipos.service';
+import { TiposService } from '../../service/tipos.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
-import { SupabaseService } from '../supabase.service';
+import { SupabaseService } from '../../supabase.service';
 
 @Component({
   selector: 'app-tipos',
