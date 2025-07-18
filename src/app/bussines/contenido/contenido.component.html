@@ -1,63 +1,214 @@
-<div class="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
-    <h2 class="text-2xl font-bold mb-4 text-blue-800">Contenidos</h2>
-
-    <!-- Botón para abrir el modal -->
-    <button (click)="mostrarModal = true" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900 mb-6">
-        Agregar contenido
-    </button>
-
-    <!-- Modal -->
-    <div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-            <button (click)="mostrarModal = false"
-                class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
-            <h3 class="text-xl font-semibold mb-4 text-blue-800">Nuevo Contenido</h3>
-            <form (ngSubmit)="addContenido(); mostrarModal = false" class="flex flex-col gap-3">
-                <input [(ngModel)]="nuevoContenido.titulo" name="titulo" type="text" placeholder="Título"
-                    class="border border-blue-300 rounded px-3 py-2" required />
-                <input [(ngModel)]="nuevoContenido.capitulo" name="capitulo" type="text" placeholder="Capítulo"
-                    class="border border-blue-300 rounded px-3 py-2" required />
-                <input [(ngModel)]="nuevoContenido.url" name="url" type="text" placeholder="URL"
-                    class="border border-blue-300 rounded px-3 py-2" required />
-                <input type="file" (change)="onFileSelected($event)" class="border border-blue-300 rounded px-3 py-2" />
-                <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900">
-                    Guardar
-                </button>
-            </form>
+<!-- Header mejorado -->
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex-1 flex justify-center">
+            <div class="text-center">
+                <h2
+                    class="text-4xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent mb-2">
+                    Contenidos</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Mensaje de error -->
-    <div *ngIf="error" class="text-red-600 mb-4">{{ error }}</div>
-
-    <!-- Lista de contenidos -->
-    <ul>
-        <li *ngFor="let contenido of contenidos" class="mb-4 border-b pb-2">
-            <div *ngIf="editando?.id !== contenido.id">
-                <h3 class="font-semibold text-blue-700">{{ contenido.titulo }}</h3>
-                <p><b>Capítulo:</b> {{ contenido.capitulo }}</p>
-                <p><b>URL:</b> <a [href]="contenido.url" target="_blank"
-                    class="text-blue-600 underline">{{ contenido.url }}</a></p>
-                <p><b>Imagen:</b> <span *ngIf="contenido.imagen_url"><img [src]="contenido.imagen_url" alt="Imagen" class="w-24 h-16 object-cover rounded" /></span></p>
-                <button (click)="setEdit(contenido)" class="text-blue-600 hover:underline mr-2">Editar</button>
-                <button (click)="deleteContenido(contenido.id)" class="text-red-600 hover:underline">Eliminar</button>
-            </div>
-            <div *ngIf="editando?.id === contenido.id" class="flex flex-col gap-2">
-                <input [(ngModel)]="editando.titulo" name="editTitulo" class="border border-blue-300 rounded px-3 py-2" />
-                <input [(ngModel)]="editando.capitulo" name="editCapitulo" class="border border-blue-300 rounded px-3 py-2" />
-                <input [(ngModel)]="editando.url" name="editUrl" class="border border-blue-300 rounded px-3 py-2" />
-                <div *ngIf="editando.imagen_url" class="mb-2">
-                    <img [src]="editando.imagen_url" alt="Imagen" class="w-24 h-16 object-cover rounded" />
-                </div>
-                <!-- Permitir cambiar la imagen -->
-                <input type="file" (change)="onEditFileSelected($event)" class="border border-blue-300 rounded px-3 py-2" />
-                <div>
-                    <button (click)="updateContenido()"
-                        class="bg-blue-700 text-white px-3 py-1 rounded hover:bg-blue-900 mr-2">Guardar</button>
-                    <button (click)="editando = null"
-                        class="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">Cancelar</button>
-                </div>
-            </div>
-        </li>
-    </ul>
+    <div class="flex items-center justify-end mb-6">
+        <button (click)="mostrarModal = true"
+            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <i class="fas fa-plus mr-2"></i>
+            Agregar contenido
+        </button>
+    </div>
 </div>
+
+<!-- Modal mejorado -->
+<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+    <div
+        class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl shadow-2xl w-full max-w-md relative border border-blue-200 transform transition-all duration-300">
+        <!-- Elemento decorativo -->
+        <div
+            class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full -translate-y-4 translate-x-4">
+        </div>
+
+        <!-- Botón de cerrar mejorado -->
+        <button (click)="mostrarModal = false"
+            class="absolute top-4 right-4 flex items-center justify-center w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 z-10">
+            <i class="fas fa-times text-sm"></i>
+        </button>
+
+        <!-- Título del modal -->
+        <div class="text-center mb-6 relative z-10">
+            <h3 class="text-2xl font-bold text-blue-900 mb-2">Nuevo Contenido</h3>
+            <div class="w-16 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto"></div>
+        </div>
+
+        <!-- Formulario mejorado -->
+        <form (ngSubmit)="addContenido(); mostrarModal = false" class="flex flex-col gap-4 relative z-10">
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">Título</label>
+                    <input [(ngModel)]="nuevoContenido.titulo" name="titulo" type="text" placeholder="Título" required
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">Capítulo</label>
+                    <input [(ngModel)]="nuevoContenido.capitulo" name="capitulo" type="text" placeholder="Capítulo"
+                        required
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">URL</label>
+                    <input [(ngModel)]="nuevoContenido.url" name="url" type="text" placeholder="URL" required
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">Imagen</label>
+                    <input type="file" (change)="onFileSelected($event)"
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 mt-6">
+                <i class="fas fa-save mr-2"></i>
+                Guardar
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Mensaje de error mejorado -->
+<div *ngIf="error" class="mb-6 p-4 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl">
+    <div class="flex items-center">
+        <div
+            class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-full mr-3">
+            <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+        </div>
+        <p class="text-red-700 font-medium">{{ error }}</p>
+    </div>
+</div>
+
+<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <li *ngFor="let contenido of contenidos"
+        class="relative bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-6 border border-blue-200 hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden">
+
+        <!-- Decorative background element -->
+        <div
+            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full -translate-y-8 translate-x-8">
+        </div>
+
+        <!-- Vista no editable -->
+        <div *ngIf="editando?.id !== contenido.id" class="relative z-10 flex flex-col items-center text-center">
+            <!-- Título con diseño mejorado -->
+            <div class="mb-4 relative">
+                <h3 class="font-bold text-blue-900 text-2xl mb-2 relative z-10">{{ contenido.titulo }}</h3>
+                <div
+                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full">
+                </div>
+            </div>
+
+            <!-- Imagen con frame mejorado -->
+            <div *ngIf="contenido.imagen_url" class="mb-4 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl blur-sm opacity-30 scale-105">
+                </div>
+                <img [src]="contenido.imagen_url" alt="Imagen"
+                    class="relative z-10 w-72 h-52 object-cover rounded-xl shadow-lg ring-2 ring-blue-300/50" />
+            </div>
+
+            <!-- Información con iconos mejorados -->
+            <div class="w-full bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-blue-200/50">
+                <div class="flex items-center justify-center mb-3">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-lg mr-3">
+                        <i class="fas fa-book text-white text-sm"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-blue-600 font-medium">Capítulo</p>
+                        <p class="text-blue-900 font-semibold">{{ contenido.capitulo }}</p>
+                    </div>
+                </div>
+
+                <!-- Enlace con botón mejorado -->
+                <div class="flex justify-center">
+                    <a [href]="contenido.url" target="_blank"
+                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Ver Contenido
+                    </a>
+                </div>
+            </div>
+
+            <!-- Botones de acción mejorados -->
+            <div class="flex space-x-3 w-full">
+                <button (click)="setEdit(contenido)"
+                    class="flex-1 flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fas fa-edit mr-2"></i> Editar
+                </button>
+                <button (click)="deleteContenido(contenido.id)"
+                    class="flex-1 flex items-center justify-center px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fas fa-trash-alt mr-2"></i> Eliminar
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista editable mejorada -->
+        <div *ngIf="editando?.id === contenido.id" class="relative z-10 flex flex-col gap-4">
+            <!-- Título de edición -->
+            <div class="text-center mb-2">
+                <h3 class="font-bold text-blue-900 text-xl">Editando Contenido</h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto mt-2"></div>
+            </div>
+
+            <!-- Campos de entrada mejorados -->
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">Título</label>
+                    <input [(ngModel)]="editando.titulo" placeholder="Título" name="editTitulo"
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">Capítulo</label>
+                    <input [(ngModel)]="editando.capitulo" placeholder="Capítulo" name="editCapitulo"
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+
+                <div class="relative">
+                    <label class="block text-sm font-medium text-blue-700 mb-1">URL</label>
+                    <input [(ngModel)]="editando.url" placeholder="URL" name="editUrl"
+                        class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm" />
+                </div>
+            </div>
+
+            <!-- Imagen actual -->
+            <div *ngIf="editando.imagen_url"
+                class="text-center bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-blue-200/50">
+                <p class="text-sm text-blue-600 font-medium mb-2">Imagen actual</p>
+                <img [src]="editando.imagen_url" alt="Imagen"
+                    class="w-40 h-24 object-cover rounded-lg shadow-md mx-auto ring-2 ring-blue-300/50" />
+            </div>
+
+            <!-- Selector de archivo mejorado -->
+            <div class="relative">
+                <label class="block text-sm font-medium text-blue-700 mb-1">Nueva imagen</label>
+                <input type="file" (change)="onEditFileSelected($event)"
+                    class="w-full border-2 border-blue-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white/80 backdrop-blur-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            </div>
+
+            <!-- Botones de acción para edición -->
+            <div class="flex gap-3 pt-4">
+                <button (click)="updateContenido()"
+                    class="flex-1 flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fas fa-save mr-2"></i>Guardar
+                </button>
+                <button (click)="editando = null"
+                    class="flex-1 flex items-center justify-center px-4 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fas fa-times mr-2"></i>Cancelar
+                </button>
+            </div>
+        </div>
+    </li>
+</ul>
