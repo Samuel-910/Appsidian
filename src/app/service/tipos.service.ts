@@ -11,6 +11,7 @@ export class TiposService {
 
   async getAll() {
     const { data, error } = await supabase.from('tipos').select('*');
+    console.log('TiposService - getAll', data, error);
     if (error) throw error;
     return data;
   }

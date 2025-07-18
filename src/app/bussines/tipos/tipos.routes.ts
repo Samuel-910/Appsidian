@@ -4,6 +4,6 @@ export const tiposRoutes: Routes = [
     {
         path: 'tipos',
         loadComponent: () =>
-            import('../tipos/tipos.component').then(m => m.TiposComponent),
+            import('./tipos.component').then(m => m.TiposComponent),
     }
 ];

@@ -21,22 +21,40 @@ export class TiposComponent {
   private supabase: SupabaseService) {}
 
   async ngOnInit() {
-    await this.loadTipos();
+    this.obtenertipos();
   }
 
-  async loadTipos() {
-    try {
-      this.tipos = await this.tiposService.getAll();
-    } catch (err: any) {
-      this.error = err.message;
+  obtenertipos() {
+    const auth = localStorage.getItem('sb-mjompchhwvbqpnjnqlma-auth-token');
+    let user_id = null;
+    if (auth) {
+      const authObj = JSON.parse(auth);
+      user_id = authObj.user?.id;
     }
+
+    // Obtener todos los tipos y filtrar por user_id
+    this.tiposService.getAll().then(data => {
+      this.tipos = data.filter((tipo: any) => tipo.user_id === user_id);
+    });
   }
 
   async addTipo(tipo: any) {
     try {
-      await this.tiposService.create(tipo);
-      this.nuevoNombre = ''; // 👈 Limpiar input luego de agregar
-      await this.loadTipos();
+      // Obtener el objeto de auth desde localStorage
+      const auth = localStorage.getItem('sb-mjompchhwvbqpnjnqlma-auth-token');
+      let user_id = null;
+      if (auth) {
+        const authObj = JSON.parse(auth);
+        user_id = authObj.user?.id;
+      }
+
+      // Crear el objeto tipo con user_id
+      const tipoConUsuario = { ...tipo, user_id };
+
+      await this.tiposService.create(tipoConUsuario);
+      this.nuevoNombre = '';
+      
+      await this.obtenertipos();
     } catch (err: any) {
       this.error = err.message;
     }
@@ -45,7 +63,7 @@ export class TiposComponent {
   async updateTipo(id: number, tipo: any) {
     try {
       await this.tiposService.update(id, tipo);
-      await this.loadTipos();
+      await this.obtenertipos();
     } catch (err: any) {
       this.error = err.message;
     }
@@ -54,7 +72,7 @@ export class TiposComponent {
   async deleteTipo(id: number) {
     try {
       await this.tiposService.delete(id);
-      await this.loadTipos();
+      await this.obtenertipos();
     } catch (err: any) {
       this.error = err.message;
     }

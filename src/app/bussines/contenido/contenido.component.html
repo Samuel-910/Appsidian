@@ -1,0 +1,63 @@
+<div class="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4 text-blue-800">Contenidos</h2>
+
+    <!-- Botón para abrir el modal -->
+    <button (click)="mostrarModal = true" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900 mb-6">
+        Agregar contenido
+    </button>
+
+    <!-- Modal -->
+    <div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <button (click)="mostrarModal = false"
+                class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
+            <h3 class="text-xl font-semibold mb-4 text-blue-800">Nuevo Contenido</h3>
+            <form (ngSubmit)="addContenido(); mostrarModal = false" class="flex flex-col gap-3">
+                <input [(ngModel)]="nuevoContenido.titulo" name="titulo" type="text" placeholder="Título"
+                    class="border border-blue-300 rounded px-3 py-2" required />
+                <input [(ngModel)]="nuevoContenido.capitulo" name="capitulo" type="text" placeholder="Capítulo"
+                    class="border border-blue-300 rounded px-3 py-2" required />
+                <input [(ngModel)]="nuevoContenido.url" name="url" type="text" placeholder="URL"
+                    class="border border-blue-300 rounded px-3 py-2" required />
+                <input type="file" (change)="onFileSelected($event)" class="border border-blue-300 rounded px-3 py-2" />
+                <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900">
+                    Guardar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="text-red-600 mb-4">{{ error }}</div>
+
+    <!-- Lista de contenidos -->
+    <ul>
+        <li *ngFor="let contenido of contenidos" class="mb-4 border-b pb-2">
+            <div *ngIf="editando?.id !== contenido.id">
+                <h3 class="font-semibold text-blue-700">{{ contenido.titulo }}</h3>
+                <p><b>Capítulo:</b> {{ contenido.capitulo }}</p>
+                <p><b>URL:</b> <a [href]="contenido.url" target="_blank"
+                    class="text-blue-600 underline">{{ contenido.url }}</a></p>
+                <p><b>Imagen:</b> <span *ngIf="contenido.imagen_url"><img [src]="contenido.imagen_url" alt="Imagen" class="w-24 h-16 object-cover rounded" /></span></p>
+                <button (click)="setEdit(contenido)" class="text-blue-600 hover:underline mr-2">Editar</button>
+                <button (click)="deleteContenido(contenido.id)" class="text-red-600 hover:underline">Eliminar</button>
+            </div>
+            <div *ngIf="editando?.id === contenido.id" class="flex flex-col gap-2">
+                <input [(ngModel)]="editando.titulo" name="editTitulo" class="border border-blue-300 rounded px-3 py-2" />
+                <input [(ngModel)]="editando.capitulo" name="editCapitulo" class="border border-blue-300 rounded px-3 py-2" />
+                <input [(ngModel)]="editando.url" name="editUrl" class="border border-blue-300 rounded px-3 py-2" />
+                <div *ngIf="editando.imagen_url" class="mb-2">
+                    <img [src]="editando.imagen_url" alt="Imagen" class="w-24 h-16 object-cover rounded" />
+                </div>
+                <!-- Permitir cambiar la imagen -->
+                <input type="file" (change)="onEditFileSelected($event)" class="border border-blue-300 rounded px-3 py-2" />
+                <div>
+                    <button (click)="updateContenido()"
+                        class="bg-blue-700 text-white px-3 py-1 rounded hover:bg-blue-900 mr-2">Guardar</button>
+                    <button (click)="editando = null"
+                        class="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400">Cancelar</button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
