@@ -11,7 +11,7 @@ export class CategoriaService {
 
   async getAll() {
     const { data, error } = await supabase.from('categoria').select('*');
-    console.log('CuentasService - getAll', data, error);
+    console.log('CategoriaService - getAll', data, error);
     if (error) throw error;
     return data;
   }
