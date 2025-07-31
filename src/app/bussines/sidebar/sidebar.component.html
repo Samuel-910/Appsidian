@@ -1,9 +1,12 @@
-<div class="fixed w-64 bg-gradient-to-b from-blue-50 to-blue-100 border-r border-blue-200 h-screen flex flex-col shadow-xl">
+<div
+  class="fixed w-64 bg-gradient-to-b from-blue-50 to-blue-100 border-r border-blue-200 h-screen flex flex-col shadow-xl">
   <!-- Encabezado de la barra lateral mejorado -->
   <div class="px-6 py-6 bg-gradient-to-r from-blue-600 to-blue-700 relative overflow-hidden">
     <!-- Elemento decorativo -->
-    <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-blue-800/20 rounded-full -translate-y-4 translate-x-4"></div>
-    
+    <div
+      class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-blue-800/20 rounded-full -translate-y-4 translate-x-4">
+    </div>
+
     <div class="relative z-10">
       <h2 class="text-xl font-bold text-white mb-1">PANEL-ADM</h2>
       <div class="w-12 h-1 bg-gradient-to-r from-blue-200 to-blue-300 rounded-full"></div>
@@ -24,81 +27,163 @@
       <ul class="space-y-2">
         <!-- Dashboard -->
         <li>
-          <button routerLink="/dashboard/principal" routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+          <button routerLink="/dashboard/principal"
+            routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
             class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+              <div
+                class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
                 <i class="fas fa-home text-white text-sm"></i>
               </div>
-              <span class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Dashboard</span>
+              <span
+                class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Dashboard</span>
             </div>
           </button>
         </li>
-
-        <!-- Tipos -->
         <li>
-          <button routerLink="/dashboard/tipos" routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+          <button (click)="toggleEntretenimiento()"
             class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
-                <i class="fas fa-user text-white text-sm"></i>
+              <div
+                class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                <i class="fas fa-folder-open text-white text-sm"></i>
               </div>
-              <span class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Tipos</span>
+              <span
+                class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Entretenimiento</span>
+              <i class="fas fa-chevron-down ml-auto text-blue-600 group-hover:text-white transition-transform duration-300"
+                [ngClass]="{ 'rotate-180': mostrarEntretenimiento }"></i>
             </div>
           </button>
         </li>
 
-        <!-- Separador para tipos dinámicos -->
-        <li class="pt-2">
-          <div class="flex items-center mb-3">
-            <div class="flex-1 h-px bg-gradient-to-r from-blue-200 to-blue-300"></div>
-            <span class="px-3 text-sm text-blue-600 font-medium">Categorías</span>
-            <div class="flex-1 h-px bg-gradient-to-r from-blue-300 to-blue-200"></div>
-          </div>
-        </li>
-
-        <!-- Tipos dinámicos -->
-        <ng-container *ngFor="let tipo of tipos">
+        <div *ngIf="mostrarEntretenimiento" class="space-y-2 pl-4 transition-all duration-500">
           <li>
-            <button [routerLink]="['/dashboard/contenido', tipo.id]" routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
-              (click)="refreshData(tipo.id)"
+            <button routerLink="/dashboard/tipos"
+              routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
               class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
               <div class="flex items-center text-left">
-                <div class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-500 rounded-md mr-3 ml-2 group-hover:from-blue-500 group-hover:to-blue-600 transition-all duration-300">
-                  <i class="fas fa-folder text-white text-xs"></i>
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-user text-white text-sm"></i>
                 </div>
-                <span class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">{{ tipo.nombre }}</span>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Tipos</span>
               </div>
             </button>
           </li>
-        </ng-container>
 
-        <!-- Separador -->
-        <li class="pt-4">
-          <div class="h-px bg-gradient-to-r from-blue-200 to-blue-300"></div>
-        </li>
+          <li>
+            <button (click)="toggleCategorias()"
+              class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+              <div class="flex items-center text-left">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-folder-open text-white text-sm"></i>
+                </div>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Categorías</span>
+                <i class="fas fa-chevron-down ml-auto text-blue-600 group-hover:text-white transition-transform duration-300"
+                  [ngClass]="{ 'rotate-180': mostrarCategorias }"></i>
+              </div>
+            </button>
+          </li>
 
-        <!-- Emprendimiento -->
-        <li class="pt-2">
-          <button routerLink="/emprendimiento" routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+          <div *ngIf="mostrarCategorias" class="space-y-2 pl-4 transition-all duration-500">
+            <ng-container *ngFor="let tipo of tipos">
+              <li>
+                <button [routerLink]="['/dashboard/contenido', tipo.id]"
+                  routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+                  (click)="refreshData(tipo.id)"
+                  class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+                  <div class="flex items-center text-left">
+                    <div
+                      class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-500 rounded-md mr-3 ml-2 group-hover:from-blue-500 group-hover:to-blue-600 transition-all duration-300">
+                      <i class="fas fa-folder text-white text-xs"></i>
+                    </div>
+                    <span class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">
+                      {{ tipo.nombre }}
+                    </span>
+                  </div>
+                </button>
+              </li>
+            </ng-container>
+          </div>
+        </div>
+
+        <li>
+          <button (click)="toggleFinanzas()"
             class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg mr-3 group-hover:from-yellow-600 group-hover:to-yellow-700 transition-all duration-300">
-                <i class="fas fa-lightbulb text-white text-sm"></i>
+              <div
+                class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg mr-3 group-hover:from-yellow-600 group-hover:to-yellow-700 transition-all duration-300">
+                <i class="fas fa-coins text-white text-sm"></i>
+
               </div>
-              <span class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Emprendimiento</span>
+              <span
+                class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Finanzas</span>
+              <i class="fas fa-chevron-down ml-auto text-blue-600 group-hover:text-white transition-transform duration-300"
+                [ngClass]="{ 'rotate-180': mostrarFinanzas }"></i>
             </div>
           </button>
         </li>
+
+        <div *ngIf="mostrarFinanzas" class="space-y-2 pl-4 transition-all duration-500">
+          <li>
+            <button routerLink="/dashboard/cuentas"
+              routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+              class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+              <div class="flex items-center text-left">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-file-invoice-dollar text-white text-sm"></i>
+
+                </div>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Cuentas</span>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button routerLink="/dashboard/categorias"
+              routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+              class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+              <div class="flex items-center text-left">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-folder-open text-white text-sm"></i>
+                </div>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Categorias</span>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button routerLink="/dashboard/recordatorios"
+              routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+              class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+              <div class="flex items-center text-left">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                </div>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Recordatorios</span>
+              </div>
+            </button>
+          </li>
+        </div>
       </ul>
     </div>
   </div>
 
   <!-- Pie de la barra lateral mejorado -->
-  <div class="px-4 py-4 mt-auto bg-gradient-to-r from-blue-100 to-blue-200 border-t border-blue-300 relative overflow-hidden">
+  <div
+    class="px-4 py-4 mt-auto bg-gradient-to-r from-blue-100 to-blue-200 border-t border-blue-300 relative overflow-hidden">
     <!-- Elemento decorativo -->
-    <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full translate-y-4 -translate-x-4"></div>
-    
+    <div
+      class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full translate-y-4 -translate-x-4">
+    </div>
+
     <div class="relative z-10">
       <!-- Título de sección -->
       <div class="mb-3">
@@ -111,36 +196,46 @@
       <ul class="space-y-2">
         <!-- Configuraciones -->
         <li>
-          <button routerLink="/configuraciones" class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 hover:text-white transition-all duration-300 group">
+          <button routerLink="/configuraciones"
+            class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-gray-500 to-gray-600 rounded-md mr-3 group-hover:from-gray-600 group-hover:to-gray-700 transition-all duration-300">
+              <div
+                class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-gray-500 to-gray-600 rounded-md mr-3 group-hover:from-gray-600 group-hover:to-gray-700 transition-all duration-300">
                 <i class="fas fa-cogs text-white text-xs"></i>
               </div>
-              <span class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Configuración</span>
+              <span
+                class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Configuración</span>
             </div>
           </button>
         </li>
 
         <!-- Ayuda -->
         <li>
-          <button href="#" class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 hover:text-white transition-all duration-300 group">
+          <button href="#"
+            class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-md mr-3 group-hover:from-green-600 group-hover:to-green-700 transition-all duration-300">
+              <div
+                class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-md mr-3 group-hover:from-green-600 group-hover:to-green-700 transition-all duration-300">
                 <i class="fas fa-question-circle text-white text-xs"></i>
               </div>
-              <span class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Ayuda</span>
+              <span
+                class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Ayuda</span>
             </div>
           </button>
         </li>
 
         <!-- Cerrar Sesión -->
         <li>
-          <button (click)="logout()" class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-red-400 hover:to-red-500 hover:text-white transition-all duration-300 group">
+          <button (click)="logout()"
+            class="w-full p-2 rounded-lg hover:bg-gradient-to-r hover:from-red-400 hover:to-red-500 hover:text-white transition-all duration-300 group">
             <div class="flex items-center text-left">
-              <div class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-md mr-3 group-hover:from-red-600 group-hover:to-red-700 transition-all duration-300">
+              <div
+                class="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-md mr-3 group-hover:from-red-600 group-hover:to-red-700 transition-all duration-300">
                 <i class="fa-solid fa-right-from-bracket text-white text-xs"></i>
               </div>
-              <span class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Cerrar Sesión</span>
+              <span
+                class="text-blue-700 group-hover:text-white text-sm font-medium transition-colors duration-300">Cerrar
+                Sesión</span>
             </div>
           </button>
         </li>

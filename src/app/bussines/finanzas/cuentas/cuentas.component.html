@@ -1,0 +1,477 @@
+<!-- cuentas.component.html -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-blue-100">
+    <div class="max-w-6xl mx-auto p-8">
+        <!-- Header Section -->
+        <div class="bg-white/70 backdrop-blur-md rounded-3xl shadow-xl border border-blue-200/50 p-8 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div>
+                    <h2
+                        class="text-4xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent mb-2">
+                        Mis Cuentas
+                    </h2>
+                    <div class="text-2xl font-semibold text-slate-700">
+                        Total: <span class="text-blue-600">{{ total | number:'1.2-2' }} S/.</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button (click)="abrirHistorialTransferencias()"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center gap-2">
+                        <i class="fas fa-history"></i>
+                        Historial de transferencias
+                    </button>
+
+
+                    <button (click)="mostrarModalTransferencia = true"
+                        class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center gap-2">
+                        <i class="fas fa-exchange-alt"></i>
+                        Nueva transferencia
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Cuentas Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+            <div *ngFor="let cuenta of cuentas"
+                class="group bg-white/80 backdrop-blur-md border border-blue-200/50 rounded-3xl p-6 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+
+                <!-- Decorative background -->
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-blue-600/10 rounded-full -translate-y-8 translate-x-8 group-hover:scale-110 transition-transform duration-500">
+                </div>
+
+                <!-- Content -->
+                <div class="relative z-10">
+                    <!-- Header with icon -->
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
+                            [ngStyle]="{ 'background': 'linear-gradient(135deg, ' + (cuenta.color || '#3b82f6') + ', ' + (cuenta.color || '#1d4ed8') + ')' }">
+                            <i [class]="'fas '+ getRutaIconoPorId(cuenta.id_icono)" class="text-2xl text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-slate-700 group-hover:text-blue-700 transition-colors">
+                                {{ cuenta.nombre_cuenta }}
+                            </h3>
+                            <p class="text-sm text-slate-500">
+                                Actualizado: {{ cuenta.fecha_ultima_actualizacion | date:'shortDate' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Balance -->
+                    <div class="mb-6">
+                        <p class="text-3xl font-bold text-slate-800 mb-1">
+                            {{ cuenta.saldo_actual | number:'1.2-2' }} <span class="text-lg text-slate-600">S/.</span>
+                        </p>
+                        <div class="w-full bg-blue-100 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 75%">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex gap-3">
+                        <button (click)="editarCuenta(cuenta)"
+                            class="flex-1 px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 text-white rounded-xl hover:from-amber-500 hover:to-amber-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button (click)="eliminarCuenta(cuenta.id_cuenta)"
+                            class="flex-1 px-4 py-2 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-xl hover:from-red-500 hover:to-red-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Account Button -->
+        <div class="flex justify-center">
+            <button (click)="mostrarModal = true"
+                class="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-3xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 flex items-center gap-3 text-lg font-semibold">
+                <div
+                    class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center group-hover:rotate-90 transition-transform duration-300">
+                    <i class="fas fa-plus"></i>
+                </div>
+                Agregar nueva cuenta
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal agregar cuenta -->
+<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4">
+    <div
+        class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative border-2 border-blue-200/50 transform transition-all duration-300 max-h-[90vh] overflow-y-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-8 rounded-t-3xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-4 -translate-x-4"></div>
+
+            <button (click)="mostrarModal = false" (click)="resetFormulario()"
+                class="absolute top-6 right-6 flex items-center justify-center w-10 h-10 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="relative z-10">
+                <h3 class="text-3xl font-bold text-white mb-2">Nueva Cuenta</h3>
+                <p class="text-blue-100">Crea una nueva cuenta para gestionar tus finanzas</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="p-8">
+            <form (ngSubmit)="guardarCuenta(); mostrarModal = false" class="space-y-6">
+                <!-- Nombre de cuenta -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-slate-700">Nombre de la cuenta</label>
+                    <input [(ngModel)]="nuevaCuenta.nombre_cuenta" name="nombre_cuenta" type="text" required
+                        placeholder="Ej: Cuenta de ahorros"
+                        class="w-full border-2 border-blue-200 rounded-2xl px-4 py-3 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-slate-400" />
+                </div>
+
+                <!-- Saldo inicial -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-slate-700">Saldo inicial</label>
+                    <div class="relative">
+                        <span
+                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 font-medium">S/.</span>
+                        <input [(ngModel)]="nuevaCuenta.saldo_actual" name="saldo_actual" type="number" required
+                            placeholder="0.00"
+                            class="w-full border-2 border-blue-200 rounded-2xl pl-12 pr-4 py-3 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-slate-400" />
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-slate-700">Color de la cuenta</label>
+                    <div class="flex items-center gap-4">
+                        <input [(ngModel)]="nuevaCuenta.color" name="color" type="color"
+                            class="w-16 h-12 border-2 border-blue-200 rounded-xl cursor-pointer" />
+                        <span class="text-sm text-slate-600">Selecciona un color representativo</span>
+                    </div>
+                </div>
+
+                <!-- Selector de icono -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-slate-700">Icono</label>
+                    <div class="relative" (click)="mostrarOpciones = !mostrarOpciones">
+                        <div
+                            class="border-2 border-blue-200 rounded-2xl px-4 py-3 bg-blue-50/50 flex items-center justify-between cursor-pointer hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i [class]="'fas '+ getIconoSeleccionadoClass()" class="text-blue-600"></i>
+                                </div>
+                                <span class="text-slate-700">{{ obtenerNombreIconoSeleccionado() }}</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-slate-400 transition-transform"
+                                [class.rotate-180]="mostrarOpciones"></i>
+                        </div>
+
+                        <!-- Lista de iconos -->
+                        <div *ngIf="mostrarOpciones"
+                            class="absolute z-20 w-full mt-2 bg-white border-2 border-blue-200 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
+                            <div *ngFor="let icono of iconos" (click)="seleccionarIcono(icono)"
+                                class="px-4 py-3 hover:bg-blue-50 cursor-pointer flex items-center gap-3 transition-colors border-b border-blue-100 last:border-b-0">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i [class]="'fas '+ icono.ruta_icono" class="text-blue-600"></i>
+                                </div>
+                                <span class="text-slate-700">{{ icono.nombre }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit"
+                    class="w-full flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mt-8 font-semibold text-lg">
+                    <i class="fas fa-save mr-3"></i>
+                    Guardar cuenta
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de transferencia -->
+<div *ngIf="mostrarModalTransferencia"
+    class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4">
+    <div
+        class="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative border-2 border-blue-200/50 transform transition-all duration-300 max-h-[90vh] overflow-y-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 p-8 rounded-t-3xl relative overflow-hidden">
+            <!-- Decorative circles -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-8 translate-x-8"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/15 rounded-full translate-y-4 -translate-x-4"></div>
+            <div class="absolute top-1/2 right-1/4 w-16 h-16 bg-white/10 rounded-full"></div>
+
+            <button (click)="mostrarModalTransferencia = false"
+                class="absolute top-6 right-6 flex items-center justify-center w-10 h-10 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm border border-white/20">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="relative z-10">
+                <div class="flex items-center mb-3">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mr-4 backdrop-blur-sm">
+                        <i class="fas fa-exchange-alt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-1">Nueva Transferencia</h3>
+                        <p class="text-blue-100">Transfiere saldo entre tus cuentas de forma segura</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="p-8 bg-gradient-to-b from-blue-50/30 to-white">
+            <form (ngSubmit)="realizarTransferencia()" class="space-y-6">
+
+                <!-- Cuenta Origen -->
+                <div class="space-y-3">
+                    <label class="flex items-center text-sm font-semibold text-slate-700">
+                        <i class="fas fa-wallet text-blue-600 mr-2"></i>
+                        Cuenta de origen
+                    </label>
+                    <select [(ngModel)]="transferencia.cuenta_origen" name="cuenta_origen" required
+                        class="w-full border-2 border-blue-200 rounded-2xl px-4 py-4 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md text-slate-700 font-medium">
+                        <option value="" disabled>Selecciona cuenta origen</option>
+                        <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_cuenta">{{ cuenta.nombre_cuenta }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Cuenta Destino -->
+                <div class="space-y-3">
+                    <label class="flex items-center text-sm font-semibold text-slate-700">
+                        <i class="fas fa-piggy-bank text-blue-600 mr-2"></i>
+                        Cuenta destino
+                    </label>
+                    <select [(ngModel)]="transferencia.cuenta_destino" name="cuenta_destino" required
+                        class="w-full border-2 border-blue-200 rounded-2xl px-4 py-4 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md text-slate-700 font-medium">
+                        <option value="" disabled>Selecciona cuenta destino</option>
+                        <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_cuenta">{{ cuenta.nombre_cuenta }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Monto -->
+                <div class="space-y-3">
+                    <label class="flex items-center text-sm font-semibold text-slate-700">
+                        <i class="fas fa-dollar-sign text-blue-600 mr-2"></i>
+                        Monto a transferir
+                    </label>
+                    <div class="relative">
+                        <span
+                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600 font-bold text-lg">S/.</span>
+                        <input [(ngModel)]="transferencia.monto" name="monto" type="number" step="0.01" min="0.01" required placeholder="0.00"
+                            class="w-full border-2 border-blue-200 rounded-2xl pl-12 pr-4 py-4 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-slate-400 shadow-sm hover:shadow-md text-slate-700 font-medium text-lg" />
+                    </div>
+                </div>
+
+                <!-- Comentario -->
+                <div class="space-y-3">
+                    <label class="flex items-center text-sm font-semibold text-slate-700">
+                        <i class="fas fa-comment text-blue-600 mr-2"></i>
+                        Comentario (opcional)
+                    </label>
+                    <input [(ngModel)]="transferencia.comentario" name="comentario" type="text"
+                        placeholder="Ej: Pago de servicios, Ahorro mensual..."
+                        class="w-full border-2 border-blue-200 rounded-2xl px-4 py-4 bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 placeholder-slate-400 shadow-sm hover:shadow-md text-slate-700" />
+                </div>
+
+                <!-- Resumen visual -->
+                <div class="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl p-4 border border-blue-200">
+                    <h4 class="text-sm font-semibold text-blue-800 mb-2 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Resumen de la transferencia
+                    </h4>
+                    <div class="text-sm text-blue-700 space-y-1">
+                        <p><span class="font-medium">Monto:</span> S/ {{ transferencia.monto || '0.00' }}</p>
+                        <p class="text-xs text-blue-600">La transferencia se procesará de forma inmediata</p>
+                    </div>
+                </div>
+
+                <!-- Botón enviar -->
+                <button type="submit"
+                    class="w-full flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white rounded-2xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mt-8 font-semibold text-lg border border-blue-500/20">
+                    <i class="fas fa-paper-plane mr-3 text-lg"></i>
+                    Realizar transferencia
+                    <div class="ml-auto opacity-60">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal historial de transferencias -->
+<div *ngIf="mostrarModalHistorial"
+    class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4">
+    <div
+        class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl relative border-2 border-blue-200/50 transform transition-all duration-300 max-h-[90vh] overflow-y-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 rounded-t-3xl relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-40 h-40 bg-white/15 rounded-full -translate-y-12 translate-x-12"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-8 -translate-x-8"></div>
+            <div class="absolute top-1/3 right-1/3 w-20 h-20 bg-white/10 rounded-full"></div>
+
+            <button (click)="mostrarModalHistorial = false"
+                class="absolute top-6 right-6 flex items-center justify-center w-10 h-10 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm border border-white/20">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="relative z-10">
+                <div class="flex items-center mb-3">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mr-4 backdrop-blur-sm">
+                        <i class="fas fa-history text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-1">Historial de Transferencias</h3>
+                        <p class="text-blue-100">Lista completa de transferencias realizadas entre cuentas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="p-8 bg-gradient-to-b from-blue-50/30 to-white">
+            <div *ngIf="transferencias.length > 0; else sinTransferencias">
+                <!-- Estadísticas rápidas -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl p-4 border border-blue-300/50">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-line text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-blue-700">Total transferencias</p>
+                                <p class="text-lg font-bold text-blue-900">{{ transferencias.length }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-indigo-100 to-indigo-200 rounded-2xl p-4 border border-indigo-300/50">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-coins text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-indigo-700">Última transferencia</p>
+                                <p class="text-lg font-bold text-indigo-900">{{ transferencias[0]?.fecha | date:'shortDate' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-sky-100 to-sky-200 rounded-2xl p-4 border border-sky-300/50">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-sky-700">Período</p>
+                                <p class="text-lg font-bold text-sky-900">Este mes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla -->
+                <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto border-collapse">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+                                    <th class="p-4 text-left font-semibold">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        Fecha
+                                    </th>
+                                    <th class="p-4 text-left font-semibold">
+                                        <i class="fas fa-wallet mr-2"></i>
+                                        Cuenta Origen
+                                    </th>
+                                    <th class="p-4 text-left font-semibold">
+                                        <i class="fas fa-piggy-bank mr-2"></i>
+                                        Cuenta Destino
+                                    </th>
+                                    <th class="p-4 text-left font-semibold">
+                                        <i class="fas fa-dollar-sign mr-2"></i>
+                                        Monto
+                                    </th>
+                                    <th class="p-4 text-left font-semibold">
+                                        <i class="fas fa-comment mr-2"></i>
+                                        Comentario
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let t of transferencias; let i = index" 
+                                    class="hover:bg-blue-50 transition-all duration-200 border-b border-blue-100"
+                                    [class.bg-blue-25]="i % 2 === 0">
+                                    <td class="p-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-clock text-blue-600 text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-slate-800">{{ t.fecha | date:'shortDate' }}</p>
+                                                <p class="text-xs text-slate-500">{{ t.fecha | date:'EEEE' }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="bg-blue-100 rounded-xl p-3 border border-blue-200">
+                                            <p class="font-semibold text-blue-900">{{ t.cuenta_origen.nombre_cuenta }}</p>
+                                            <p class="text-sm text-blue-700">Saldo: S/ {{ t.cuenta_origen.saldo_actual }}</p>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="bg-indigo-100 rounded-xl p-3 border border-indigo-200">
+                                            <p class="font-semibold text-indigo-900">{{ t.cuenta_destino.nombre_cuenta }}</p>
+                                            <p class="text-sm text-indigo-700">Saldo: S/ {{ t.cuenta_destino.saldo_actual }}</p>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex items-center">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-arrow-right text-green-600 text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-xl font-bold text-green-700">S/ {{ t.monto }}</p>
+                                                <p class="text-xs text-green-600">Completado</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 max-w-xs">
+                                            <p class="text-sm text-slate-700">{{ t.comentario || 'Sin comentarios' }}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #sinTransferencias>
+                <div class="text-center py-16">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-inbox text-blue-600 text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-slate-700 mb-2">No hay transferencias registradas</h4>
+                    <p class="text-slate-500 mb-6">Aún no has realizado ninguna transferencia entre cuentas.</p>
+                    <button (click)="mostrarModalTransferencia = true; mostrarModalHistorial = false"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 font-medium">
+                        <i class="fas fa-plus mr-2"></i>
+                        Realizar primera transferencia
+                    </button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

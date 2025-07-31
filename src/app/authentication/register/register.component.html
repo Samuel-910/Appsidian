@@ -1,12 +1,28 @@
 <form (ngSubmit)="register()" #form="ngForm" novalidate class="relative min-h-screen flex justify-center items-center">
-  <!-- Fondo degradado azul -->
+
+  <!-- Fondo mejorado -->
   <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center overflow-hidden z-0"
-    style="background-image: url('img/hola.avif');"></div>
+    style="background-image: url('img/hola.avif');">
+    <!-- Overlay con gradiente -->
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-blue-600/20 to-blue-800/40"></div>
+    <!-- Efectos de blur en las esquinas -->
+    <div
+      class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-3xl">
+    </div>
+    <div
+      class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl">
+    </div>
+  </div>
 
   <!-- Contenedor principal -->
-  <div class="relative w-1/2 min-h-screen flex justify-center items-center px-4 z-10">
-    <div class="relative flex flex-col md:flex-row w-full max-w-5xl bg-transparent rounded-3xl overflow-hidden shadow-lg">
-      <!-- Borde animado azul -->
+  <div class="relative w-full max-w-6xl flex justify-center items-center px-4 z-10">
+    <div
+      class="relative flex flex-col lg:flex-row w-full bg-gradient-to-br from-white/95 to-blue-50/95 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+
+      <!-- Elemento decorativo superior -->
+      <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800"></div>
+
+      <!-- Borde animado mejorado -->
       <svg class="absolute inset-0 w-full h-full pointer-events-none z-20 border-svg" viewBox="0 0 900 450"
         preserveAspectRatio="none">
         <defs>
@@ -15,45 +31,200 @@
             <stop offset="50%" stop-color="#1E90FF" />
             <stop offset="100%" stop-color="#00BFFF" />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
-        <rect x="3" y="3" width="894" height="444" rx="24" ry="24" fill="none" stroke="url(#grad-neon-blue)" stroke-width="6"
-          class="border-rect" />
+        <rect x="3" y="3" width="894" height="444" rx="24" ry="24" fill="none" stroke="url(#grad-neon-blue)"
+          stroke-width="4" class="border-rect" filter="url(#glow)" opacity="0.8" />
       </svg>
 
-      <!-- Formulario -->
-      <div class="w-full p-10 bg-white bg-opacity-90">
-        <div class="mb-7">
-          <h3 class="font-semibold text-2xl text-blue-800">Crear cuenta</h3>
-          <p class="text-blue-400">
-            ¿Ya tienes una cuenta?
-            <a routerLink="" class="text-sm text-blue-700 hover:text-blue-900">Iniciar sesión</a>
+      <!-- Panel lateral informativo (oculto en móvil) -->
+      <div class="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-600 to-blue-800 relative overflow-hidden">
+        <!-- Elementos decorativos -->
+        <div
+          class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/30 to-transparent rounded-full -translate-y-8 translate-x-8">
+        </div>
+        <div
+          class="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-full translate-y-8 -translate-x-8">
+        </div>
+
+        <!-- Contenido del panel -->
+        <div class="flex flex-col justify-center items-center p-8 text-white relative z-10">
+          <div class="text-center mb-8">
+            <div
+              class="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
+              <i class="fas fa-user-plus text-3xl text-white"></i>
+            </div>
+            <h2 class="text-3xl font-bold mb-4">Únete a Nosotros</h2>
+            <p class="text-blue-100 text-sm leading-relaxed">Crea tu cuenta y accede a todas nuestras funcionalidades
+            </p>
+          </div>
+
+          <!-- Beneficios -->
+          <div class="space-y-4 w-full">
+            <div class="flex items-center text-sm">
+              <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-check text-xs"></i>
+              </div>
+              <span>Acceso completo a la plataforma</span>
+            </div>
+            <div class="flex items-center text-sm">
+              <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-check text-xs"></i>
+              </div>
+              <span>Contenido personalizado</span>
+            </div>
+            <div class="flex items-center text-sm">
+              <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-check text-xs"></i>
+              </div>
+              <span>Soporte técnico 24/7</span>
+            </div>
+            <div class="flex items-center text-sm">
+              <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-check text-xs"></i>
+              </div>
+              <span>Actualizaciones gratuitas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario principal -->
+      <div class="w-full lg:w-3/5 p-8 lg:p-12 relative z-10 flex flex-col justify-center">
+
+        <!-- Elementos decorativos móviles -->
+        <div
+          class="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full lg:hidden">
+        </div>
+
+        <!-- Título mejorado -->
+        <div class="mb-8 text-center lg:text-left">
+          <div class="flex items-center justify-center lg:justify-start mb-4">
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+              <i class="fas fa-user-plus text-white text-xl"></i>
+            </div>
+            <div>
+              <h3
+                class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
+                Crear Cuenta
+              </h3>
+            </div>
+          </div>
+          <div class="w-20 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto lg:mx-0 mb-4"></div>
+          <p class="text-gray-600 text-lg">Completa la información para crear tu cuenta</p>
+          <p class="text-sm text-gray-500 mt-2">¿Ya tienes una cuenta?
+            <a routerLink="/"
+              class="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors">Iniciar sesión
+              aquí</a>
           </p>
         </div>
 
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm text-blue-700 mb-1">Correo Electrónico</label>
-            <input [(ngModel)]="email" name="email" required type="email" placeholder="correo@ejemplo.com"
-              class="w-full text-sm px-4 py-3 bg-white border border-blue-200 rounded-lg focus:outline-none focus:border-blue-400" />
+        <!-- Formulario -->
+        <div class="space-y-6">
+
+          <!-- Email mejorado -->
+          <div class="flex flex-col">
+            <label for="email" class="mb-2 text-gray-700 font-medium flex items-center">
+              <i class="fas fa-envelope text-blue-600 mr-2"></i>
+              Correo Electrónico
+            </label>
+            <div class="relative">
+              <input id="email" [(ngModel)]="email" name="email" required type="email" placeholder="correo@ejemplo.com"
+                class="w-full px-4 py-4 pl-12 bg-white/80 backdrop-blur-sm shadow-lg rounded-xl border-2 border-blue-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-xl" />
+              <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <i class="fas fa-envelope text-gray-400"></i>
+              </div>
+            </div>
           </div>
 
-          <div class="relative">
-            <label class="block text-sm text-blue-700 mb-1">Contraseña</label>
-            <input [(ngModel)]="password" name="password" required [type]="showPassword ? 'text' : 'password'" placeholder="Contraseña"
-              class="w-full text-sm px-4 py-3 pr-12 bg-white border border-blue-200 rounded-lg focus:outline-none focus:border-blue-400" />
-            <button type="button" (click)="togglePasswordVisibility()"
-              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-900">
-              <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          <!-- Contraseña mejorada -->
+          <div class="flex flex-col">
+            <label for="password" class="mb-2 text-gray-700 font-medium flex items-center">
+              <i class="fas fa-lock text-blue-600 mr-2"></i>
+              Contraseña
+            </label>
+            <div class="relative">
+              <input id="password" [(ngModel)]="password" name="password" required
+                [type]="showPassword ? 'text' : 'password'" placeholder="••••••••"
+                class="w-full px-4 py-4 pl-12 pr-12 bg-white/80 backdrop-blur-sm shadow-lg rounded-xl border-2 border-blue-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-xl" />
+              <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <i class="fas fa-lock text-gray-400"></i>
+              </div>
+              <button type="button" (click)="togglePasswordVisibility()"
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors p-1"
+                aria-label="Mostrar contraseña">
+                <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+            <!-- Indicador de fortaleza de contraseña -->
+            <div class="mt-2">
+              <div class="flex space-x-1">
+                <div class="h-1 w-1/4 bg-gray-200 rounded"></div>
+                <div class="h-1 w-1/4 bg-gray-200 rounded"></div>
+                <div class="h-1 w-1/4 bg-gray-200 rounded"></div>
+                <div class="h-1 w-1/4 bg-gray-200 rounded"></div>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">La contraseña debe tener al menos 8 caracteres</p>
+            </div>
+          </div>
+
+          <!-- Confirmar contraseña -->
+          <div class="flex flex-col">
+            <label for="confirmPassword" class="mb-2 text-gray-700 font-medium flex items-center">
+              <i class="fas fa-lock text-blue-600 mr-2"></i>
+              Confirmar Contraseña
+            </label>
+            <div class="relative">
+              <input id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" type="password"
+                placeholder="••••••••" required
+                class="w-full px-4 py-4 pl-12 bg-white/80 backdrop-blur-sm shadow-lg rounded-xl border-2 border-blue-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-xl" />
+              <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <i class="fas fa-lock text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Términos y condiciones -->
+          <div class="flex items-start">
+            <label class="flex items-start cursor-pointer">
+              <input type="checkbox" name="terms" required class="sr-only">
+              <div class="relative mt-1">
+                <div
+                  class="w-5 h-5 bg-white border-2 border-blue-300 rounded transition-all duration-200 hover:border-blue-500">
+                </div>
+                <div class="absolute inset-0 w-5 h-5 bg-blue-600 rounded opacity-0 transition-opacity duration-200">
+                </div>
+                <i
+                  class="fas fa-check absolute inset-0 w-5 h-5 text-white text-xs flex items-center justify-center opacity-0 transition-opacity duration-200"></i>
+              </div>
+              <span class="ml-3 text-sm text-gray-600 leading-relaxed">
+                Acepto los
+                <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">términos y
+                  condiciones</a>
+                y la
+                <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">política de
+                  privacidad</a>
+              </span>
+            </label>
+          </div>
+
+          <!-- Botón de registro mejorado -->
+          <div class="pt-4">
+            <button type="submit" [disabled]="!form.valid"
+              class="w-full flex justify-center items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white p-4 rounded-xl tracking-wide font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:hover:transform-none text-lg">
+              <i class="fas fa-user-plus mr-3"></i>
+              Crear Mi Cuenta
             </button>
           </div>
         </div>
-
-        <!-- Botón de Registro -->
-        <div class="mt-7">
-          <button type="submit" [disabled]="!form.valid"
-            class="w-full flex justify-center bg-blue-700 hover:bg-blue-900 text-white p-3 rounded-lg tracking-wide font-semibold transition ease-in duration-500">
-            Registrarse
-          </button>
-        </div>
       </div>
     </div>
+  </div>
+</form>

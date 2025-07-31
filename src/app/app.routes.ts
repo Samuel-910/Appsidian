@@ -12,7 +12,7 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'dashboard', // prefijo para rutas de negocio
+        path: 'dashboard',
         children: [
             ...businessRoutes
         ]

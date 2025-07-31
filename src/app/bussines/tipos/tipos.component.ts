@@ -17,8 +17,7 @@ export class TiposComponent {
   error: string | null = null;
   nuevoNombre: string = ''; // 👈 Agregado
 
-  constructor(private tiposService: TiposService,   private router: Router,
-  private supabase: SupabaseService) {}
+  constructor(private tiposService: TiposService,   private router: Router) {}
 
   async ngOnInit() {
     this.obtenertipos();
@@ -77,15 +76,5 @@ export class TiposComponent {
       this.error = err.message;
     }
   }
-
-  async logout() {
-  const { error } = await this.supabase.signOut();
-  if (error) {
-    console.error('Error al cerrar sesión:', error.message);
-  } else {
-    // Redirigir al login
-    this.router.navigate(['/']);
-  }
-}
 
 }

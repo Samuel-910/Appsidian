@@ -1,15 +1,24 @@
-<!-- Fondo completo -->
+<!-- Fondo completo mejorado -->
 <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center overflow-hidden z-0"
-  style="background-image: url('/img/hola.avif');"></div>
+  style="background-image: url('/img/hola.avif');">
+  <!-- Overlay con gradiente -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-blue-600/10 to-blue-800/30"></div>
+  <!-- Efectos de blur en las esquinas -->
+  <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
+</div>
 
 <!-- Contenedor principal -->
 <div class="relative min-h-screen flex justify-center items-center px-4 z-10">
 
-  <!-- Tarjeta con borde animado -->
-  <div class="relative flex flex-col md:flex-row w-1/2 max-w-5xl bg-transparent rounded-3xl overflow-hidden shadow-lg"
+  <!-- Tarjeta principal mejorada -->
+  <div class="relative flex flex-col md:flex-row w-full max-w-4xl bg-gradient-to-br from-white/95 to-blue-50/95 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl border border-white/20"
     [ngClass]="currentTheme">
 
-    <!-- SVG borde animado -->
+    <!-- Elemento decorativo superior -->
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800"></div>
+
+    <!-- SVG borde animado mejorado -->
     <svg class="absolute inset-0 w-full h-full pointer-events-none z-20 border-svg" viewBox="0 0 900 450"
       preserveAspectRatio="none">
       <defs>
@@ -18,70 +27,146 @@
           <stop offset="50%" [attr.stop-color]="themeColors[currentTheme].middle" />
           <stop offset="100%" [attr.stop-color]="themeColors[currentTheme].end" />
         </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       <rect x="3" y="3" width="894" height="444" rx="24" ry="24" fill="none"
-        [attr.stroke]="'url(#grad-neon)'" stroke-width="6" class="border-rect" />
+        [attr.stroke]="'url(#grad-neon)'" stroke-width="4" class="border-rect" filter="url(#glow)" opacity="0.8" />
     </svg>
 
-    <div
-      class="w-full p-6 md:p-12 bg-white bg-opacity-80 relative rounded-b-3xl md:rounded-r-3xl md:rounded-bl-none z-10 flex flex-col justify-center">
+    <!-- Panel lateral decorativo (oculto en móvil) -->
+    <div class="hidden md:flex md:w-2/5 bg-gradient-to-br from-blue-600 to-blue-800 relative overflow-hidden">
+      <!-- Elementos decorativos -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/30 to-transparent rounded-full -translate-y-8 translate-x-8"></div>
+      <div class="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-full translate-y-8 -translate-x-8"></div>
+      
+      <!-- Contenido del panel -->
+      <div class="flex flex-col justify-center items-center p-8 text-white relative z-10">
+        <div class="text-center mb-8">
+          <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mb-4 mx-auto shadow-lg">
+            <i class="fas fa-user-shield text-2xl text-white"></i>
+          </div>
+          <h2 class="text-2xl font-bold mb-2">Acceso Seguro</h2>
+          <p class="text-blue-100 text-sm">Tu información está protegida con los más altos estándares de seguridad</p>
+        </div>
+        
+        <!-- Características -->
+        <div class="space-y-4 w-full">
+          <div class="flex items-center text-sm">
+            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span>Encriptación de extremo a extremo</span>
+          </div>
+          <div class="flex items-center text-sm">
+            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span>Autenticación de dos factores</span>
+          </div>
+          <div class="flex items-center text-sm">
+            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+              <i class="fas fa-check text-xs"></i>
+            </div>
+            <span>Protección contra fraudes</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <!-- Título -->
-      <div class="mb-6 text-center">
-        <h3 class="text-2xl md:text-4xl font-bold" [ngClass]="themeTextClass">Bienvenido</h3>
-        <p class="text-sm text-gray-600 mt-2">¿No tienes una cuenta?
-          <a routerLink="/register" [ngClass]="themeLinkClass">Inscribirse</a>
+    <!-- Formulario principal -->
+    <div class="w-full md:w-3/5 p-8 md:p-12 relative z-10 flex flex-col justify-center">
+      
+      <!-- Elementos decorativos móviles -->
+      <div class="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-blue-500/20 rounded-full md:hidden"></div>
+
+      <!-- Título mejorado -->
+      <div class="mb-8 text-center md:text-left">
+        <div class="flex items-center justify-center md:justify-start mb-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+            <i class="fas fa-sign-in-alt text-white"></i>
+          </div>
+          <div>
+            <h3 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">Bienvenido</h3>
+          </div>
+        </div>
+        <div class="w-16 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto md:mx-0 mb-4"></div>
+        <p class="text-gray-600">Inicia sesión para acceder a tu cuenta</p>
+        <p class="text-sm text-gray-500 mt-2">¿No tienes una cuenta?
+          <a routerLink="/register" class="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors">Inscribirse aquí</a>
         </p>
       </div>
 
-      <form class="space-y-6 md:space-y-8">
+      <form class="space-y-6">
 
-        <!-- Email -->
+        <!-- Email mejorado -->
         <div class="flex flex-col">
-          <label for="email" class="mb-1 md:mb-2 text-gray-700 font-medium">Correo Electrónico</label>
-          <input id="email" name="email" [(ngModel)]="email" type="email" placeholder="tú@ejemplo.com"
-            class="px-4 py-3 bg-white shadow-inner rounded-xl border border-gray-200 placeholder-gray-400 italic focus:outline-none transition"
-            [ngClass]="themeRingClass" />
+          <label for="email" class="mb-2 text-gray-700 font-medium flex items-center">
+            <i class="fas fa-envelope text-blue-600 mr-2"></i>
+            Correo Electrónico
+          </label>
+          <div class="relative">
+            <input id="email" name="email" [(ngModel)]="email" type="email" placeholder="tú@ejemplo.com"
+              class="w-full px-4 py-4 pl-12 bg-white/80 backdrop-blur-sm shadow-lg rounded-xl border-2 border-blue-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-xl" />
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <i class="fas fa-envelope text-gray-400"></i>
+            </div>
+          </div>
         </div>
 
-        <!-- Contraseña -->
+        <!-- Contraseña mejorada -->
         <div class="flex flex-col">
-          <label for="password" class="mb-1 md:mb-2 text-gray-700 font-medium">Contraseña</label>
-          <div class="relative w-full">
+          <label for="password" class="mb-2 text-gray-700 font-medium flex items-center">
+            <i class="fas fa-lock text-blue-600 mr-2"></i>
+            Contraseña
+          </label>
+          <div class="relative">
             <input id="password" name="password" [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'"
               placeholder="••••••••"
-              class="w-full px-4 py-3 bg-white shadow-inner rounded-xl border border-gray-200 placeholder-gray-400 italic focus:outline-none transition"
-              [ngClass]="themeRingClass" />
+              class="w-full px-4 py-4 pl-12 pr-12 bg-white/80 backdrop-blur-sm shadow-lg rounded-xl border-2 border-blue-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:shadow-xl" />
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <i class="fas fa-lock text-gray-400"></i>
+            </div>
             <button type="button" (click)="togglePasswordVisibility()"
-              class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-700 transition-colors"
+              class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors p-1"
               aria-label="Mostrar contraseña">
               <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
             </button>
           </div>
         </div>
 
-        <!-- Olvidaste contraseña -->
-        <div class="text-right">
+        <!-- Opciones adicionales -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only">
+            <div class="relative">
+              <div class="w-5 h-5 bg-white border-2 border-blue-300 rounded transition-all duration-200 hover:border-blue-500"></div>
+              <div class="absolute inset-0 w-5 h-5 bg-blue-600 rounded opacity-0 transition-opacity duration-200"></div>
+              <i class="fas fa-check absolute inset-0 w-5 h-5 text-white text-xs flex items-center justify-center opacity-0 transition-opacity duration-200"></i>
+            </div>
+            <span class="ml-2 text-sm text-gray-600">Recordarme</span>
+          </label>
+          
           <a routerLink="/verificacion"
-            class="text-sm hover:underline transition" [ngClass]="themeLinkClass">
+            class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors font-medium">
             ¿Olvidaste tu contraseña?
           </a>
         </div>
 
-        <!-- Botón Iniciar -->
-        <div>
+        <!-- Botón Iniciar mejorado -->
+        <div class="pt-4">
           <button (click)="login()" type="submit"
-            class="w-full flex justify-center text-white p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-500"
-            [ngClass]="themeButtonClass">
+            class="w-full flex justify-center items-center text-white p-4 rounded-xl tracking-wide font-semibold cursor-pointer transition-all duration-300 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <i class="fas fa-sign-in-alt mr-2"></i>
             Iniciar Sesión
           </button>
         </div>
       </form>
     </div>
   </div>
-</div>
-<div class="absolute top-4 right-4 z-30">
-  <button (click)="changeTheme('theme-blue')" class="px-2 py-1 bg-blue-600 text-white rounded mx-1">Azul</button>
-  <button (click)="changeTheme('theme-red')" class="px-2 py-1 bg-red-600 text-white rounded mx-1">Rojo</button>
-  <button (click)="changeTheme('theme-green')" class="px-2 py-1 bg-green-600 text-white rounded mx-1">Verde</button>
 </div>
