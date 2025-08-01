@@ -11,7 +11,11 @@ export const businessRoutes: Routes = [
         children: [
             ...tiposRoutes,
             ...contenidoRoutes,
-            ...finanzasRoutes
+            ...finanzasRoutes,
+            {
+                path: 'principal',
+                loadComponent: () => import('.././bussines/dashboard/dashboard.component').then(m => m.DashboardComponent)
+            }
         ]
     }
 ];

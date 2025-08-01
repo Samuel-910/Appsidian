@@ -64,7 +64,7 @@ constructor(private supabase: SupabaseService, private router: Router) { }
 async login() {
     try {
       await this.supabase.signInWithPassword(this.email, this.password);
-        this.router.navigate(['/dashboard/tipos']);
+        this.router.navigate(['/dashboard/principal']);
         Swal.fire({
           icon: 'success',
           title: '¡Bienvenido!',

@@ -128,6 +128,20 @@
         </li>
 
         <div *ngIf="mostrarFinanzas" class="space-y-2 pl-4 transition-all duration-500">
+                    <li>
+            <button routerLink="/dashboard/registro"
+              routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
+              class="w-full p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-400 hover:to-blue-500 hover:text-white transition-all duration-300 group">
+              <div class="flex items-center text-left">
+                <div
+                  class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <i class="fas fa-bell text-white text-sm"></i>
+                </div>
+                <span
+                  class="text-blue-700 group-hover:text-white font-medium transition-colors duration-300">Registros</span>
+              </div>
+            </button>
+          </li>
           <li>
             <button routerLink="/dashboard/cuentas"
               routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
@@ -157,6 +171,7 @@
               </div>
             </button>
           </li>
+
           <li>
             <button routerLink="/dashboard/recordatorios"
               routerLinkActive="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105"
@@ -171,6 +186,7 @@
               </div>
             </button>
           </li>
+
         </div>
       </ul>
     </div>

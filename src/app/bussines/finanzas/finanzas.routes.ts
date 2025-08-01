@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { cuentasRoutes } from './cuentas/cuentas.routes';
 import { categoriaRoutes } from './categoria/categoria.routes';
+import { recordatoriosRoutes } from './recordatorios/recordatorios.routes';
+import { registroRoutes } from './registro/registro.routes';
 
 export const finanzasRoutes: Routes = [
     {
@@ -8,6 +10,8 @@ export const finanzasRoutes: Routes = [
         children: [
             ...cuentasRoutes,
             ...categoriaRoutes,
+            ...recordatoriosRoutes,
+            ...registroRoutes
         ]
     }
 ];

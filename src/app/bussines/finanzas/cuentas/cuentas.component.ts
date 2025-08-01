@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CuentasService } from '../../../service/cuentas.service';
@@ -23,7 +23,11 @@ export class CuentasComponent {
   mostrarModalHistorial = false;
   transferencias: any[] = [];
 
-  constructor(private transferenciaService: transferenciaCuentasService, private cuentasService: CuentasService, private iconoService: IconoService, private router: Router) { }
+  constructor(private transferenciaService: transferenciaCuentasService, 
+    private cuentasService: CuentasService, 
+    private iconoService: IconoService, 
+    private router: Router,
+    private cdr: ChangeDetectorRef) { }
   transferencia = {
     fecha: '',
     cuenta_origen: '',
@@ -124,6 +128,10 @@ export class CuentasComponent {
     return this.cuentas.reduce((sum, c) => sum + c.saldo_actual, 0);
   }
   mostrarOpciones = false;
+  getFechaActual(): string {
+    const ahora = new Date();
+    return ahora.toISOString(); // formato compatible con bases de datos: YYYY-MM-DDTHH:mm:ss.sssZ
+  }
 
   seleccionarIcono(icono: any) {
     this.nuevaCuenta.id_icono = icono.id_icono;
@@ -173,22 +181,65 @@ export class CuentasComponent {
     this.mostrarModal = true;
   }
 
-  guardarCuenta() {
-    if (this.modoEdicion) {
-      // ✅ Envía el ID como primer argumento
-      this.cuentasService.update(this.nuevaCuenta.id_cuenta, this.nuevaCuenta).then(() => {
-        this.obtenercuentas(); // Recargar
+guardarCuenta() {
+  const ahora = new Date().toISOString();
+  this.cdr.detach();
+  const auth = localStorage.getItem('sb-mjompchhwvbqpnjnqlma-auth-token');
+  let user_id = null;
+  if (auth) {
+    const authObj = JSON.parse(auth);
+    user_id = authObj.user?.id;
+  }
+  this.nuevaCuenta.fecha_ultima_actualizacion = ahora;
+  this.nuevaCuenta.id_user = user_id;
+
+  if (this.modoEdicion) {
+    this.cuentasService.update(this.nuevaCuenta.id_cuenta, this.nuevaCuenta)
+      .then(() => {
+        this.obtenercuentas();
         this.modoEdicion = false;
-        this.nuevaCuenta = {}; // Limpiar
+        this.nuevaCuenta = {};
+        Swal.fire({
+          icon: 'success',
+          title: 'Cuenta actualizada',
+          text: 'La cuenta se actualizó correctamente.',
+          confirmButtonColor: '#3085d6'
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al actualizar',
+          text: 'No se pudo actualizar la cuenta.',
+          confirmButtonColor: '#d33'
+        });
+        console.error('Error al actualizar:', error);
       });
-    } else {
-      // Crear nueva cuenta
-      this.cuentasService.create(this.nuevaCuenta).then(() => {
+  } else {
+    this.cuentasService.create(this.nuevaCuenta)
+      .then(() => {
         this.obtenercuentas();
         this.nuevaCuenta = {};
+        Swal.fire({
+          icon: 'success',
+          title: 'Cuenta creada',
+          text: 'La cuenta se creó correctamente.',
+          confirmButtonColor: '#3085d6'
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al crear',
+          text: 'No se pudo crear la cuenta.',
+          confirmButtonColor: '#d33'
+        });
+        console.error('Error al crear:', error);
       });
-    }
   }
+}
+
+
 
 
   eliminarCuenta(id: number) {

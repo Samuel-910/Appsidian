@@ -1,0 +1,323 @@
+<div class="max-w-7xl mx-auto">
+
+    <!-- Header Section -->
+    <div class="mb-12">
+        <div class="text-center mb-8">
+            <div class="relative">
+                <h2
+                    class="text-5xl md:text-6xl font-black bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent mb-4 tracking-tight">
+                    Recordatorios de Pago
+                </h2>
+                <div
+                    class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full opacity-60">
+                </div>
+            </div>
+            <p class="text-blue-200 text-lg font-medium mt-2">Mantén al día tus finanzas personales</p>
+        </div>
+
+        <!-- Add Button -->
+        <div class="flex justify-end mb-8">
+            <button (click)="mostrarModal = true"
+                class="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white font-semibold px-8 py-4 rounded-2xl shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1 transition-all duration-300 border border-blue-500/20">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+                <div class="relative flex items-center space-x-3">
+                    <i class="fas fa-plus text-lg"></i>
+                    <span class="text-lg">Nuevo Recordatorio</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Lista de Recordatorios -->
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div *ngFor="let recordatorio of recordatorios"
+            class="group relative bg-gradient-to-br from-white/95 to-blue-50/90 backdrop-blur-sm rounded-3xl p-6 shadow-xl hover:shadow-2xl border border-blue-100/50 transform hover:-translate-y-2 transition-all duration-300">
+
+            <!-- Header de la tarjeta -->
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-xl font-bold text-blue-900 mb-1 truncate">{{ recordatorio.nombre }}</h3>
+                    <p class="text-blue-600 text-sm font-medium line-clamp-2">{{ recordatorio.comentario }}</p>
+                </div>
+                <div class="flex space-x-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button (click)="abrirModal(recordatorio)"
+                        class="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full transition-colors duration-200 hover:scale-110 transform">
+                        <i class="fas fa-edit text-sm"></i>
+                    </button>
+                    <button (click)="deleteRecordatorio(recordatorio.id)"
+                        class="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full transition-colors duration-200 hover:scale-110 transform">
+                        <i class="fas fa-trash text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Información del recordatorio -->
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-dollar-sign text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-blue-800">Monto</p>
+                        <p class="text-xs text-blue-600 truncate">S/. {{ recordatorio.cantidad || '0.00' }}</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-calendar-alt text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-blue-800">Frecuencia</p>
+                        <p class="text-xs text-blue-600 truncate">{{ recordatorio.frecuencia }}</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-calendar-check text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-blue-800">Plazo</p>
+                        <p class="text-xs text-blue-600 truncate">{{ recordatorio.fecha_inicio }} - {{
+                            recordatorio.fecha_fin }}</p>
+                    </div>
+                </div>
+                <div *ngIf="recordatorio.hora" class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-clock text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-blue-800">Hora</p>
+                        <p class="text-xs text-blue-600">{{ recordatorio.hora }}</p>
+                    </div>
+                </div>
+
+                <div *ngIf="recordatorio.comentario" class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-sticky-note text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-blue-800">Nota</p>
+                        <p class="text-xs text-blue-600 line-clamp-2">{{ recordatorio.comentario }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Próximo pago -->
+            <div class="mt-6 pt-4 border-t border-blue-200/50">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-blue-700">Próximo pago:</span>
+                    <span class="text-sm font-bold text-blue-900">
+                        {{ getDiasParaProximoPago(recordatorio) }}
+                    </span>
+
+                </div>
+            </div>
+
+
+            <!-- Estado del pago -->
+            <div class="absolute top-4 right-4">
+                <div class="flex items-center space-x-1">
+                    <div [ngClass]="{
+                        'bg-gradient-to-r from-red-400 to-red-500': !esActivo(recordatorio),
+                        'bg-gradient-to-r from-green-400 to-green-600': esActivo(recordatorio)
+                        }" class="w-3 h-3 rounded-full shadow-lg opacity-75" [title]="esActivo(recordatorio) ? 'Activo' : 'Finalizado'">
+                        {{ esActivo(recordatorio) ? '' : '❌' }}
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Efecto hover decorativo -->
+            <div
+                class="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            </div>
+        </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="!recordatorios || recordatorios.length === 0" class="text-center py-20">
+        <div
+            class="w-24 h-24 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
+            <i class="fas fa-credit-card text-white text-3xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-blue-200 mb-2">No hay recordatorios de pago</h3>
+        <p class="text-blue-300 mb-6">Comienza agregando tu primer recordatorio financiero</p>
+        <button (click)="mostrarModal = true"
+            class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            <i class="fas fa-plus mr-2"></i>
+            Agregar Recordatorio
+        </button>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div *ngIf="mostrarModal" class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md z-50 p-4">
+    <div
+        class="bg-blue-100 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-blue-200 transform transition-all duration-300">
+        <!-- Botón cerrar -->
+        <button (click)="cerrarModal()"
+            class="absolute top-6 right-6 w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center group z-10">
+            <i class="fas fa-times text-sm group-hover:rotate-90 transition-transform duration-200"></i>
+        </button>
+
+        <!-- Contenido del modal -->
+        <div class="p-8">
+            <!-- Encabezado del modal -->
+            <div class="text-center mb-8">
+                <div
+                    class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-credit-card text-white text-2xl"></i>
+                </div>
+                <h3
+                    class="text-3xl font-bold bg-gradient-to-r from-blue-800 to-cyan-600 bg-clip-text text-transparent mb-2">
+                    {{ editando ? 'Editar Recordatorio' : 'Nuevo Recordatorio de Pago' }}
+                </h3>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full mx-auto"></div>
+            </div>
+
+            <!-- Formulario -->
+            <form (ngSubmit)="guardarRecordatorio()" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Nombre del Pago -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-file-invoice-dollar mr-2 text-blue-600"></i>
+                            Nombre del Pago
+                        </label>
+                        <input [(ngModel)]="(editando || nuevoRecordatorio).nombre" name="nombre" type="text" required
+                            placeholder="Ej: Electricidad, Agua, Tarjeta de Crédito..."
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 placeholder-blue-400">
+                    </div>
+
+                    <!-- Monto -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-dollar-sign mr-2 text-blue-600"></i>
+                            Monto (S/.)
+                        </label>
+                        <input [(ngModel)]="(editando || nuevoRecordatorio).cantidad" name="cantidad" type="number"
+                            step="0.01" min="0" required placeholder="0.00"
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 placeholder-blue-400">
+                    </div>
+
+                    <!-- Frecuencia de Pago -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-600"></i>
+                            Frecuencia
+                        </label>
+                        <select [(ngModel)]="(editando || nuevoRecordatorio).frecuencia" name="frecuencia" required
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="Mensual">Mensual</option>
+                            <option value="Quincenal">Quincenal</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Bimestral">Bimestral</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Anual">Anual</option>
+                            <option value="Único">Pago Único</option>
+                        </select>
+                    </div>
+
+                    <!-- Fecha de Inicio -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-calendar-day mr-2 text-blue-600"></i>
+                            Fecha de Inicio
+                        </label>
+                        <input [(ngModel)]="(editando || nuevoRecordatorio).fecha_inicio" name="fecha_inicio"
+                            type="date" required
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                    </div>
+
+                    <!-- Fecha de Fin -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-calendar-times mr-2 text-blue-600"></i>
+                            Fecha Final
+                        </label>
+                        <input [(ngModel)]="(editando || nuevoRecordatorio).fecha_fin" name="fecha_fin" type="date"
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                    </div>
+
+                    <!-- Hora de Recordatorio -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="far fa-clock mr-2 text-blue-600"></i>
+                            Hora de Recordatorio
+                        </label>
+                        <input [(ngModel)]="(editando || nuevoRecordatorio).hora" name="hora" type="time" required
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                    </div>
+
+                    <!-- Categoría -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-tags mr-2 text-blue-600"></i>
+                            Categoría
+                        </label>
+                        <select [(ngModel)]="(editando || nuevoRecordatorio).id_categoria" name="id_categoria"
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                            <option [ngValue]="null">-- Seleccionar Categoría --</option>
+                            <option *ngFor="let cat of categorias" [value]="cat.id_categoria">
+                                {{ cat.nombre_categoria }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Cuenta -->
+                    <div>
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-wallet mr-2 text-blue-600"></i>
+                            Cuenta de Pago
+                        </label>
+                        <select [(ngModel)]="(editando || nuevoRecordatorio).id_cuenta" name="id_cuenta"
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200">
+                            <option [ngValue]="null">-- Seleccionar Cuenta --</option>
+                            <option *ngFor="let cuenta of cuentas" [value]="cuenta.id_cuenta">
+                                {{ cuenta.nombre_cuenta }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- comentario -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-sticky-note mr-2 text-blue-600"></i>
+                            Comentario
+                        </label>
+                        <textarea [(ngModel)]="(editando || nuevoRecordatorio).comentario" name="comentario" rows="3"
+                            placeholder="Notas adicionales sobre este pago..."
+                            class="w-full border-2 border-blue-200 hover:border-blue-300 focus:border-blue-500 rounded-xl px-4 py-3 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 placeholder-blue-400 resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-6">
+                    <button type="button" (click)="cerrarModal()"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                        <i class="fas fa-save mr-2"></i>
+                        {{ editando ? 'Actualizar' : 'Guardar' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
