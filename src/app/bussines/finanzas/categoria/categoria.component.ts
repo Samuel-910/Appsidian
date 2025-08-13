@@ -23,7 +23,8 @@ export class CategoriaComponent implements OnInit {
     nombre_categoria: '',
     tipo: '',
     color: '#3b82f6',
-    id_icono: 1
+    id_icono: 1,
+    id_user: '' 
   };
   mostrarOpciones = false;
   constructor(private categoriaService: CategoriaService, private iconoService: IconoService) { }
@@ -70,57 +71,68 @@ export class CategoriaComponent implements OnInit {
   }
 
   getRutaIconoPorId(id_icono: number): string {
-    console.log('Obteniendo ruta del icono con ID:', id_icono);
     const icono = this.iconos.find(i => i.id_icono === id_icono);
     return icono ? icono.ruta_icono : '';
   }
   getIconoSeleccionadoClass() {
-  const icono = this.iconos.find(i => i.id_icono === this.nuevaCategoria.id_icono);
-  return icono ? icono.ruta_icono : 'fa-question';
-}
-
-obtenerNombreIconoSeleccionado() {
-  const icono = this.iconos.find(i => i.id_icono === this.nuevaCategoria.id_icono);
-  return icono ? icono.nombre : 'Selecciona un icono';
-}
-resetModal() {
-  this.nuevaCategoria = { id_categoria:null, nombre_categoria: '', color: '#3b82f6', id_icono: 1, tipo: this.selectedTab };
-  this.mostrarModalCategoria = false;
-  this.modoEdicion = false;
-}
-
-seleccionarIcono(icono: any) {
-  this.nuevaCategoria.id_icono = icono.id_icono;
-  this.mostrarOpciones = false;
-}
-guardarCategoria() {
-  if (this.modoEdicion && this.nuevaCategoria.id_categoria != null) {
-    this.categoriaService.update(this.nuevaCategoria.id_categoria, this.nuevaCategoria).then(() => {
-      this.obtenerCategorias();
-      this.resetModal();
-    });
-  } else {
-    this.categoriaService.create(this.nuevaCategoria).then(() => {
-      this.obtenerCategorias();
-      this.resetModal();
-    });
+    const icono = this.iconos.find(i => i.id_icono === this.nuevaCategoria.id_icono);
+    return icono ? icono.ruta_icono : 'fa-question';
   }
-}
 
-
-editarCategoria(categoria: any) {
-  this.nuevaCategoria = { ...categoria };
-  this.modoEdicion = true;
-  this.mostrarModalCategoria = true;
-}
-
-eliminarCategoria(categoria: any) {
-  const confirmado = confirm(`¿Estás seguro de eliminar la categoría "${categoria.nombre_categoria}"?`);
-  if (confirmado) {
-    this.categoriaService.delete(categoria.id_categoria).then(() => {
-      this.obtenerCategorias(); // O el método que refresque la lista
-    });
+  obtenerNombreIconoSeleccionado() {
+    const icono = this.iconos.find(i => i.id_icono === this.nuevaCategoria.id_icono);
+    return icono ? icono.nombre : 'Selecciona un icono';
   }
-}
+  resetModal() {
+    this.nuevaCategoria = { id_categoria: null, nombre_categoria: '', color: '#3b82f6', id_icono: 1, tipo: this.selectedTab, id_user: '' };
+    this.mostrarModalCategoria = false;
+    this.modoEdicion = false;
+  }
+
+  seleccionarIcono(icono: any) {
+    this.nuevaCategoria.id_icono = icono.id_icono;
+    this.mostrarOpciones = false;
+  }
+  guardarCategoria() {
+    const auth = localStorage.getItem('sb-mjompchhwvbqpnjnqlma-auth-token');
+    let user_id = null;
+
+    if (auth) {
+      const authObj = JSON.parse(auth);
+      user_id = authObj.user?.id;
+    }
+    this.nuevaCategoria.tipo = this.selectedTab;
+    this.nuevaCategoria.id_user = user_id;
+    console.log('Guardando categoría:', this.nuevaCategoria);
+    if (this.modoEdicion && this.nuevaCategoria.id_categoria != null) {
+      this.categoriaService.update(this.nuevaCategoria.id_categoria, this.nuevaCategoria).then(() => {
+        this.obtenerCategorias();
+        this.resetModal();
+      });
+    } else {
+      const { id_categoria, ...categoriaParaCrear } = this.nuevaCategoria;
+
+      this.categoriaService.create(categoriaParaCrear).then(() => {
+        this.obtenerCategorias();
+        this.resetModal();
+      });
+    }
+  }
+
+
+  editarCategoria(categoria: any) {
+    this.nuevaCategoria = { ...categoria };
+    this.modoEdicion = true;
+    this.mostrarModalCategoria = true;
+  }
+
+  eliminarCategoria(categoria: any) {
+    const confirmado = confirm(`¿Estás seguro de eliminar la categoría "${categoria.nombre_categoria}"?`);
+    if (confirmado) {
+      this.categoriaService.delete(categoria.id_categoria).then(() => {
+        this.obtenerCategorias(); // O el método que refresque la lista
+      });
+    }
+  }
 
 }

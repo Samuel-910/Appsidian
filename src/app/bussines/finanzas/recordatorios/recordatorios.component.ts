@@ -158,6 +158,7 @@ export class RecordatoriosComponent implements OnInit {
 
   // Eliminar
   async deleteRecordatorio(id: number) {
+    console.log('Eliminando recordatorio con ID:', id);
     const result = await Swal.fire({
       title: '¿Estás seguro?',
       text: '¡Esta acción no se puede deshacer!',
