@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { supabase } from './supabase.config';
+import { Noticia } from './noticias/noticias.component';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
@@ -33,5 +34,36 @@ export class SupabaseService {
     if (error) throw error;
     return data;
   }
+async getNoticias(): Promise<Noticia[]> {
+  const { data, error } = await supabase
+    .from('noticias')
+    .select('*')
+    .order('fecha', { ascending: false });
+  
+  if (error) throw error;
+  return data || [];
+}
 
+async getNoticiasByFuente(fuente: string): Promise<Noticia[]> {
+  const { data, error } = await supabase
+    .from('noticias')
+    .select('*')
+    .eq('fuente', fuente)
+    .order('fecha', { ascending: false });
+  
+  if (error) throw error;
+  return data || [];
+}
+
+async getFuentes(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('noticias')
+    .select('fuente')
+    .not('fuente', 'is', null);
+  
+  if (error) throw error;
+  
+  const uniqueSources = [...new Set(data?.map(item => item.fuente) || [])];
+  return uniqueSources;
+}
 }

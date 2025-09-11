@@ -4,7 +4,7 @@ export const authRoutes: Routes = [
     {
         path: '',
         loadComponent: () =>
-            import('../authentication/login/login.component').then(m => m.LoginComponent),
+            import('../noticias/noticias.component').then(m => m.NewsDisplayComponent),
     },
     {
         path: 'register',
