@@ -4,7 +4,7 @@ export const authRoutes: Routes = [
     {
         path: '',
         loadComponent: () =>
-            import('../noticias/noticias.component').then(m => m.NewsDisplayComponent),
+            import('../noticias/noticias.component').then(m => m.NewsPortalComponent),
     },
     {
         path: 'register',

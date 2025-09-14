@@ -1,6 +1,28 @@
 import { Injectable } from '@angular/core';
 import { supabase } from './supabase.config';
-import { Noticia } from './noticias/noticias.component';
+interface Noticia {
+  id_noticia: number;
+  nombre_fuente: string;
+  url_fuente: string;
+  fecha_publicacion: string;
+  fecha_scraping: string;
+  periodo_inicio: number;
+  periodo_mes: number;
+  periodo_semana: number;
+  imagen_url: string;
+  imagen_path: string;
+  pais: string;
+  region: string;
+  ciudad: string;
+  ubicacion_mencionada: string;
+  categoria: string;
+  entidades_mencionadas: string;
+  titulo: string;
+  contenido: string;
+  language: string;
+  tipo_noticia: string;
+  fecha_registro: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
@@ -34,36 +56,24 @@ export class SupabaseService {
     if (error) throw error;
     return data;
   }
-async getNoticias(): Promise<Noticia[]> {
-  const { data, error } = await supabase
-    .from('noticias')
-    .select('*')
-    .order('fecha', { ascending: false });
-  
+
+
+// supabase.service.ts
+async getNoticias(): Promise<{ data: Noticia[]; total: number }> {
+  const { data, count, error } = await supabase
+    .from('noticiastodo')
+    .select('*', { count: 'exact' });
+
   if (error) throw error;
-  return data || [];
+
+  console.log('📊 Total noticias encontradas:', count);
+
+  return {
+    data: data as Noticia[],
+    total: count ?? 0
+  };
 }
 
-async getNoticiasByFuente(fuente: string): Promise<Noticia[]> {
-  const { data, error } = await supabase
-    .from('noticias')
-    .select('*')
-    .eq('fuente', fuente)
-    .order('fecha', { ascending: false });
-  
-  if (error) throw error;
-  return data || [];
-}
 
-async getFuentes(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from('noticias')
-    .select('fuente')
-    .not('fuente', 'is', null);
-  
-  if (error) throw error;
-  
-  const uniqueSources = [...new Set(data?.map(item => item.fuente) || [])];
-  return uniqueSources;
-}
+
 }
